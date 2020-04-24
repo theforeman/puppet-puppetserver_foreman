@@ -1,0 +1,84 @@
+{
+  "name": "theforeman-puppetserver_foreman",
+  "version": "0.1.0",
+  "author": "theforeman",
+  "summary": "Scripts to integrate Puppetserver with Foreman",
+  "license": "GPL-3.0+",
+  "source": "https://github.com/theforeman/puppet-foreman_puppet",
+  "project_page": "https://github.com/theforeman/puppet-foreman_puppet",
+  "issues_url": "https://github.com/theforeman/puppet-foreman_puppet/issues",
+  "description": "Module for installing the scripts on Puppetserver to integrate with Foreman",
+  "tags": [
+    "foreman",
+    "puppet",
+    "puppetserver",
+    "puppet-server"
+  ],
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.18.0 < 7.0.0"
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 5.5.8 < 7.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "9",
+        "10"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "16.04",
+        "18.04"
+      ]
+    },
+    {
+      "operatingsystem": "FreeBSD",
+      "operatingsystemrelease": [
+        "11",
+        "12"
+      ]
+    },
+    {
+      "operatingsystem": "DragonFly",
+      "operatingsystemrelease": [
+        "4"
+      ]
+    },
+    {
+      "operatingsystem": "Archlinux"
+    }
+  ]
+}
