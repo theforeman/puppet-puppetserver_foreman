@@ -1,6 +1,9 @@
 # This file is managed centrally by modulesync
 #   https://github.com/theforeman/foreman-installer-modulesync
 
+require 'webmock/rspec'
+require 'puppet/reports'
+
 require 'voxpupuli/test/spec_helper'
 
 def get_content(subject, title)

@@ -1,3 +1,12 @@
 ---
+Gemfile:
+  extra:
+    - gem: webmock
+      version: '~> 2.0'
+    - gem: oauth
+spec/spec_helper.rb:
+  requires:
+    - webmock/rspec
+    - puppet/reports
 spec/spec_helper_acceptance.rb:
   delete: true
