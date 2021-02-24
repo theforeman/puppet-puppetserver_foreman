@@ -1,6 +1,4 @@
 ---
-.github/workflows/acceptance.yml:
-  delete: true
 Gemfile:
   extra:
     - gem: webmock
