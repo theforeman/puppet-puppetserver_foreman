@@ -50,4 +50,6 @@ class puppetserver_foreman::params {
   # Used to authenticate to Foreman, required if require_ssl_puppetmasters is enabled
   $client_ssl_cert = "${puppet_ssldir}/certs/${lower_fqdn}.pem"
   $client_ssl_key  = "${puppet_ssldir}/private_keys/${lower_fqdn}.pem"
+
+  $enc_fact_extension = bool2str(versioncmp($facts['puppetversion'], '7.0') >= 0, 'json', 'yaml')
 }

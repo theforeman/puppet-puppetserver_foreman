@@ -47,8 +47,20 @@ describe 'puppetserver_foreman' do
 
       let(:json_package) { facts[:os]['family'] == 'Debian' ? 'ruby-json' : 'rubygem-json' }
 
+      let(:fact_extension) { facts[:puppetversion].to_i >= 7 ? 'json' : 'yaml' }
+
       describe 'without custom parameters' do
         it { should contain_class('puppetserver_foreman::params') }
+        it do
+          should contain_class('puppetserver_foreman')
+            .with_enc_fact_extension(fact_extension)
+            .with_puppet_home(var_dir)
+            .with_puppet_basedir("#{site_ruby}/puppet")
+            .with_puppet_etcdir(etc_dir)
+            .with_ssl_ca(%r{^#{ssl_dir}/.+\.pem$})
+            .with_ssl_cert(%r{^#{ssl_dir}/.+\.pem$})
+            .with_ssl_key(%r{^#{ssl_dir}/.+\.pem$})
+        end
 
         it 'should set up reports' do
           should contain_exec('Create Puppet Reports dir')
@@ -113,6 +125,7 @@ describe 'puppetserver_foreman' do
             ":puppetdir: \"#{var_dir}\"",
             ':puppetuser: "puppet"',
             ':facts: true',
+            ":fact_extension: \"#{fact_extension}\"",
             ':timeout: 60',
             ':report_timeout: 60',
             ':threads: null',

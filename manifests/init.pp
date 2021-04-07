@@ -26,6 +26,9 @@
 #   Whether to configure the ENC to send facts to Foreman
 # @param puppet_home
 #   The Puppet home where the YAML files with facts live. Used for the ENC script
+# @param enc_fact_extension
+#   The fact extension to use. Support for json was added in Puppetserver
+#   6.20.0. Puppetserver < 7 defaults to yaml, >= 7 defaults to json.
 #
 # @param reports
 #   Whether to enable the report processor
@@ -38,6 +41,7 @@ class puppetserver_foreman (
   Boolean $enc = true,
   Integer[0] $enc_timeout = 60,
   Boolean $enc_upload_facts = true,
+  Enum['yaml', 'json'] $enc_fact_extension = $puppetserver_foreman::params::enc_fact_extension,
   Stdlib::Absolutepath $puppet_home = $puppetserver_foreman::params::puppet_home,
   String $puppet_user = 'puppet',
   String $puppet_group = 'puppet',
