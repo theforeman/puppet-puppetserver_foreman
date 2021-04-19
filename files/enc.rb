@@ -113,11 +113,11 @@ def process_host_facts(certname)
         upload_facts(certname, req) if req
         return 0
       rescue => e
-        $stderr.puts "During fact upload occured an exception: #{e}"
+        $stderr.puts "During fact upload occurred an exception: #{e}"
         return 1
       end
     else
-      $stderr.puts "Fact file #{f} does not contain any fact"
+      $stderr.puts "Fact file #{f} does not contain any facts"
       return 2
     end
 end
