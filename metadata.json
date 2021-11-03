@@ -4,9 +4,9 @@
   "author": "theforeman",
   "summary": "Scripts to integrate Puppetserver with Foreman",
   "license": "GPL-3.0+",
-  "source": "https://github.com/theforeman/puppet-foreman_puppet",
-  "project_page": "https://github.com/theforeman/puppet-foreman_puppet",
-  "issues_url": "https://github.com/theforeman/puppet-foreman_puppet/issues",
+  "source": "https://github.com/theforeman/puppet-puppetserver_foreman",
+  "project_page": "https://github.com/theforeman/puppet-puppetserver_foreman",
+  "issues_url": "https://github.com/theforeman/puppet-puppetserver_foreman/issues",
   "description": "Module for installing the scripts on Puppetserver to integrate with Foreman",
   "tags": [
     "foreman",
