@@ -107,7 +107,7 @@ describe 'puppetserver_foreman' do
         end
 
         it 'should install json package' do
-          should contain_package(json_package).with_ensure('present')
+          should contain_package(json_package).with_ensure('installed')
         end
 
         it 'should create puppet.yaml' do
