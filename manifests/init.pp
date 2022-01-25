@@ -34,6 +34,8 @@
 #   Whether to enable the report processor
 # @param reports_timeout
 #   The timeout to use on HTTP calls in the report processor
+# @param report_retry_limit
+#   The number of times to retry HTTP calls in the report processor
 # @param puppet_basedir
 #   The directory used to install the report processor to
 class puppetserver_foreman (
@@ -49,6 +51,7 @@ class puppetserver_foreman (
   Stdlib::Absolutepath $puppet_etcdir = $puppetserver_foreman::params::puppet_etcdir,
   Boolean $reports = true,
   Integer[0] $reports_timeout = 60,
+  Integer[0] $report_retry_limit = 1,
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_ca = $puppetserver_foreman::params::client_ssl_ca,
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_cert = $puppetserver_foreman::params::client_ssl_cert,
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_key = $puppetserver_foreman::params::client_ssl_key,
