@@ -128,6 +128,7 @@ describe 'puppetserver_foreman' do
             ":fact_extension: \"#{fact_extension}\"",
             ':timeout: 60',
             ':report_timeout: 60',
+            ':report_retry_limit: 1',
             ':threads: null',
           ])
         end
