@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.1.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/2.1.0) (2022-02-03)
+
+[Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/2.0.0...2.1.0)
+
+**Implemented enhancements:**
+
+- Add report\_retry\_limit setting [\#18](https://github.com/theforeman/puppet-puppetserver_foreman/pull/18) ([jplindquist](https://github.com/jplindquist))
+- puppetlabs/stdlib: Allow 8.x [\#16](https://github.com/theforeman/puppet-puppetserver_foreman/pull/16) ([bastelfreak](https://github.com/bastelfreak))
+
+**Merged pull requests:**
+
+- Correct assertion to reflect ensure\_packages new default [\#15](https://github.com/theforeman/puppet-puppetserver_foreman/pull/15) ([ekohl](https://github.com/ekohl))
+- Fix project URLs used by puppet forge [\#14](https://github.com/theforeman/puppet-puppetserver_foreman/pull/14) ([neomilium](https://github.com/neomilium))
+
 ## [2.0.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/2.0.0) (2021-07-23)
 
 [Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/1.0.0...2.0.0)
