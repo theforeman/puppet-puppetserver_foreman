@@ -93,6 +93,7 @@ class Http_Fact_Requests
 end
 
 class FactUploadError < StandardError; end
+class NodeRetrievalError < StandardError; end
 
 require 'etc'
 require 'net/http'
@@ -272,7 +273,7 @@ def enc(certname)
     response = http.request(req)
 
     unless response.code == "200"
-      raise "Error retrieving node #{certname}: #{response.class}\nCheck Foreman's /var/log/foreman/production.log for more information."
+      raise NodeRetrievalError, "Error retrieving node #{certname}: #{response.class}\nCheck Foreman's /var/log/foreman/production.log for more information."
     end
     response.body
   end
@@ -443,7 +444,7 @@ if __FILE__ == $0 then
           result = enc(certname)
           cache(certname, result)
         end
-      rescue TimeoutError, SocketError, Errno::EHOSTUNREACH, Errno::ECONNREFUSED, FactUploadError => e
+      rescue TimeoutError, SocketError, Errno::EHOSTUNREACH, Errno::ECONNREFUSED, NodeRetrievalError, FactUploadError => e
         $stderr.puts "Serving cached ENC: #{e}"
         # Read from cache, we got some sort of an error.
         result = read_cache(certname)
