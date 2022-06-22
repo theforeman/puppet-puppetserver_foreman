@@ -56,7 +56,6 @@ class puppetserver_foreman (
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_cert = $puppetserver_foreman::params::client_ssl_cert,
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_key = $puppetserver_foreman::params::client_ssl_key,
 ) inherits puppetserver_foreman::params {
-
   case $facts['os']['family'] {
     'Debian': { $json_package = 'ruby-json' }
     default:  { $json_package = 'rubygem-json' }
@@ -64,7 +63,7 @@ class puppetserver_foreman (
 
   ensure_packages([$json_package])
 
-  file {"${puppet_etcdir}/foreman.yaml":
+  file { "${puppet_etcdir}/foreman.yaml":
     content => template("${module_name}/puppet.yaml.erb"),
     mode    => '0640',
     owner   => 'root',
@@ -77,7 +76,7 @@ class puppetserver_foreman (
       creates => "${puppet_basedir}/reports",
     }
 
-    file {"${puppet_basedir}/reports/foreman.rb":
+    file { "${puppet_basedir}/reports/foreman.rb":
       ensure  => file,
       content => file("${module_name}/report.rb"),
       mode    => '0644',
