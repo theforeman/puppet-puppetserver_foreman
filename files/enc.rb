@@ -120,7 +120,7 @@ def parse_file(filename, mac_address_workaround = false)
   when '.yaml'
     data = File.read(filename)
     quote_macs!(data) if mac_address_workaround && YAML.load('22:22:22:22:22:22').is_a?(Integer)
-    YAML.load(data.gsub(/\!ruby\/object.*$/,''))
+    YAML.safe_load(data.gsub(/\!ruby\/object.*$/,''), permitted_classes: [Symbol, Time])
   when '.json'
     JSON.parse(File.read(filename))
   else
