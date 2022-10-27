@@ -99,9 +99,21 @@ Puppet::Reports.register_report(:foreman) do
 
     # find our metric values
     METRIC.each do |m|
-      h=translate_metrics_to26(m)
-      mv = metrics[h[:type]]
-      report_status[m] = mv[h[:name].to_sym] + mv[h[:name].to_s] rescue nil
+      case m
+      when "applied"
+        mv = metrics["changes"]
+        name = "total"
+      when "failed_restarts"
+        mv = metrics["resources"]
+        name = "failed_to_restart"
+      when "pending"
+        mv = metrics["events"]
+        name = "noop"
+      else
+        mv = metrics["resources"]
+        name = m
+      end
+      report_status[m] = mv[name.to_sym] + mv[name.to_s] rescue nil
       report_status[m] ||= 0
     end
 
@@ -152,22 +164,6 @@ Puppet::Reports.register_report(:foreman) do
       }
     end
     return h
-  end
-
-  # The metrics layout has changed in Puppet 2.6.x release,
-  # this method attempts to align the bit value metrics and the new name scheme in 2.6.x
-  # returns a hash of { :type => "metric type", :name => "metric_name"}
-  def translate_metrics_to26 metric
-    case metric
-    when "applied"
-      { :type => "changes", :name => "total"}
-    when "failed_restarts"
-      { :type => "resources", :name => "failed_to_restart"}
-    when "pending"
-      { :type => "events", :name => "noop" }
-    else
-      { :type => "resources", :name => metric}
-    end
   end
 
   def foreman_url
