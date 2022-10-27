@@ -144,11 +144,17 @@ Puppet::Reports.register_report(:foreman) do
       next if log.message =~ /^Finished catalog run in \d+.\d+ seconds$/
 
       # Match Foreman's slightly odd API format...
-      l = { 'log' => { 'sources' => {}, 'messages' => {} } }
-      l['log']['level'] = log.level.to_s
-      l['log']['messages']['message'] = log.message
-      l['log']['sources']['source'] = log.source
-      h << l
+      h << {
+        'log' => {
+          'level' => log.level.to_s,
+          'sources' => {
+            'source' => log.source,
+          },
+          'messages' => {
+            'message' => log.message,
+          },
+        },
+      }
     end
     return h
   end
