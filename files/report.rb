@@ -133,12 +133,10 @@ Puppet::Reports.register_report(:foreman) do
   end
 
   def m2h metrics
-    h = {}
-    metrics.each do |title, mtype|
-      h[mtype.name] ||= {}
-      mtype.values.each{|m| h[mtype.name].merge!({m[0].to_s => m[2]})}
-    end
-    return h
+    metrics.map do |title, mtype|
+      values = mtype.values.map { |name, _label, value| [name, value] }
+      [title, values.to_h]
+    end.to_h
   end
 
   def logs_to_array logs
