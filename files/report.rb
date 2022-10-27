@@ -78,15 +78,14 @@ Puppet::Reports.register_report(:foreman) do
   end
 
   def generate_report
-    report = {}
-    report['host'] = self.host
-    # Time.to_s behaves differently in 1.8 / 1.9 so we explicity set the 1.9 format
-    report['reported_at'] = self.time.utc.strftime("%Y-%m-%d %H:%M:%S UTC")
-    report['status'] = metrics_to_hash(self)
-    report['metrics'] = m2h(self.metrics)
-    report['logs'] = logs_to_array(self.logs)
-
-    report
+    {
+      'host' => self.host,
+      # Time.to_s behaves differently in 1.8 / 1.9 so we explicity set the 1.9 format
+      'reported_at' => self.time.utc.strftime("%Y-%m-%d %H:%M:%S UTC"),
+      'status' => metrics_to_hash(self),
+      'metrics' => m2h(self.metrics),
+      'logs' => logs_to_array(self.logs),
+    }
   end
 
   private
