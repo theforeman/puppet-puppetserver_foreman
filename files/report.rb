@@ -79,7 +79,6 @@ Puppet::Reports.register_report(:foreman) do
 
   def generate_report
     report = {}
-    set_report_format
     report['host'] = self.host
     # Time.to_s behaves differently in 1.8 / 1.9 so we explicity set the 1.9 format
     report['reported_at'] = self.time.utc.strftime("%Y-%m-%d %H:%M:%S UTC")
@@ -100,13 +99,9 @@ Puppet::Reports.register_report(:foreman) do
 
     # find our metric values
     METRIC.each do |m|
-      if @format == 0
-        report_status[m] = metrics["resources"][m.to_sym] unless metrics["resources"].nil?
-      else
-        h=translate_metrics_to26(m)
-        mv = metrics[h[:type]]
-        report_status[m] = mv[h[:name].to_sym] + mv[h[:name].to_s] rescue nil
-      end
+      h=translate_metrics_to26(m)
+      mv = metrics[h[:type]]
+      report_status[m] = mv[h[:name].to_sym] + mv[h[:name].to_s] rescue nil
       report_status[m] ||= 0
     end
 
@@ -116,7 +111,7 @@ Puppet::Reports.register_report(:foreman) do
       report_status["skipped"] = 0
     end
     # fix for reports that contain no metrics (i.e. failed catalog)
-    if @format > 1 and report.respond_to?(:status) and report.status == "failed"
+    if report.respond_to?(:status) and report.status == "failed"
       report_status["failed"] += 1
     end
     # fix for Puppet non-resource errors (i.e. failed catalog fetches before falling back to cache)
@@ -165,37 +160,14 @@ Puppet::Reports.register_report(:foreman) do
   def translate_metrics_to26 metric
     case metric
     when "applied"
-      case @format
-      when 0..1
-        { :type => "total", :name => :changes}
-      else
-        { :type => "changes", :name => "total"}
-      end
+      { :type => "changes", :name => "total"}
     when "failed_restarts"
-      case @format
-      when 0..1
-        { :type => "resources", :name => metric}
-      else
-        { :type => "resources", :name => "failed_to_restart"}
-      end
+      { :type => "resources", :name => "failed_to_restart"}
     when "pending"
       { :type => "events", :name => "noop" }
     else
       { :type => "resources", :name => metric}
     end
-  end
-
-  def set_report_format
-    @format ||= case
-                when self.instance_variables.detect {|v| v.to_s == "@environment"}
-                  @format = 3
-                when self.instance_variables.detect {|v| v.to_s == "@report_format"}
-                  @format = 2
-                when self.instance_variables.detect {|v| v.to_s == "@resource_statuses"}
-                  @format = 1
-                else
-                  @format = 0
-                end
   end
 
   def foreman_url
