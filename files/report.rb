@@ -37,7 +37,7 @@ Puppet::Reports.register_report(:foreman) do
 
   def process
     # Default retry limit is 1.
-    retry_limit = SETTINGS[:report_retry_limit] ? SETTINGS[:report_retry_limit] : 1
+    retry_limit = SETTINGS.fetch(:report_retry_limit, 1)
     tries = 0
     begin
       # check for report metrics
