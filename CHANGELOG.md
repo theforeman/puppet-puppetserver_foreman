@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.2.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/2.2.0) (2022-10-28)
+
+[Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/2.1.0...2.2.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#35684](https://projects.theforeman.org/issues/35684) - Drop Applied catalog lines [\#25](https://github.com/theforeman/puppet-puppetserver_foreman/pull/25) ([ekohl](https://github.com/ekohl))
+- Update to voxpupuli-test 5 [\#22](https://github.com/theforeman/puppet-puppetserver_foreman/pull/22) ([ekohl](https://github.com/ekohl))
+- Serve from cache when response.code != 200 [\#21](https://github.com/theforeman/puppet-puppetserver_foreman/pull/21) ([idl0r](https://github.com/idl0r))
+
 ## [2.1.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/2.1.0) (2022-02-03)
 
 [Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/2.0.0...2.1.0)
