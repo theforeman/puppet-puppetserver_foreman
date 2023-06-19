@@ -141,7 +141,7 @@ Puppet::Reports.register_report(:foreman) do
       next if log.level == :debug
 
       # skipping catalog summary run messages, we dont want them in Foreman's db
-      next if log.message =~ /^(Finished catalog run|Applied catalog) in \d+.\d+ seconds$/
+      next if log.message =~ /^Finished catalog run in \d+.\d+ seconds$/
 
       # Match Foreman's slightly odd API format...
       l = { 'log' => { 'sources' => {}, 'messages' => {} } }
