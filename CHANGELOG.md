@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.3.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/2.3.0) (2023-06-20)
+
+[Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/2.2.0...2.3.0)
+
+**Implemented enhancements:**
+
+- Refs [\#35833](https://projects.theforeman.org/issues/35833) - Revert "Fixes [\#35684](https://projects.theforeman.org/issues/35684) - Drop Applied catalog lines" [\#29](https://github.com/theforeman/puppet-puppetserver_foreman/pull/29) ([ekohl](https://github.com/ekohl))
+
 ## [2.2.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/2.2.0) (2022-10-28)
 
 [Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/2.1.0...2.2.0)
