@@ -1,0 +1,2 @@
+---
+foreman_proxy::foreman_base_url: 'https://hiera-foreman.example.com'
