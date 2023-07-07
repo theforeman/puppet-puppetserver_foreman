@@ -154,6 +154,12 @@ describe 'puppetserver_foreman' do
           should_not contain_file("#{etc_dir}/node.rb")
         end
       end
+
+      describe 'with foreman_url via Hiera' do
+        let(:hiera_config) { 'spec/fixtures/hiera/hiera.yaml' }
+
+        it { should contain_class('puppetserver_foreman').with_foreman_url('https://hiera-foreman.example.com') }
+      end
     end
   end
 end

@@ -2,7 +2,7 @@
 # @api private
 class puppetserver_foreman::params {
   $lower_fqdn = downcase($facts['networking']['fqdn'])
-  $foreman_url = "https://${lower_fqdn}"
+  $foreman_url = lookup('foreman_proxy::foreman_base_url') |$key| { "https://${lower_fqdn}" }
 
   if fact('aio_agent_version') =~ String[1] {
     $puppet_basedir = '/opt/puppetlabs/puppet/lib/ruby/vendor_ruby/puppet'
