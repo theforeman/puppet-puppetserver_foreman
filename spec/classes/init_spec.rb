@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'puppetserver_foreman' do
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
-      let(:facts) { override_facts(os_facts, {networking: {fqdn: 'foreman.example.com'}}) }
+      let(:facts) { override_facts(os_facts, networking: {fqdn: 'foreman.example.com'}) }
       let(:site_ruby) do
         short_ruby_version = facts[:rubyversion].split('.')[0..1].join('.')
         case facts[:os]['family']
