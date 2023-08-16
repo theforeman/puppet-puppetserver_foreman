@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.4.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/2.4.0) (2023-08-16)
+
+[Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/2.3.0...2.4.0)
+
+**Implemented enhancements:**
+
+- puppetlabs/stdlib: Allow 9.x [\#33](https://github.com/theforeman/puppet-puppetserver_foreman/pull/33) ([bastelfreak](https://github.com/bastelfreak))
+- Fixes [\#36573](https://projects.theforeman.org/issues/36573) - Reuse foreman\_url answer from foreman\_proxy module [\#31](https://github.com/theforeman/puppet-puppetserver_foreman/pull/31) ([ekohl](https://github.com/ekohl))
+
 ## [2.3.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/2.3.0) (2023-06-20)
 
 [Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/2.2.0...2.3.0)
