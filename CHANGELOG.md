@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.0.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/3.0.0) (2023-11-14)
+
+[Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/2.4.0...3.0.0)
+
+**Breaking changes:**
+
+- Drop Puppet 6 support [\#37](https://github.com/theforeman/puppet-puppetserver_foreman/pull/37) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- Add Puppet 8 support [\#34](https://github.com/theforeman/puppet-puppetserver_foreman/pull/34) ([bastelfreak](https://github.com/bastelfreak))
+- Use YAML.safe\_load [\#27](https://github.com/theforeman/puppet-puppetserver_foreman/pull/27) ([ekohl](https://github.com/ekohl))
+
 ## [2.4.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/2.4.0) (2023-08-16)
 
 [Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/2.3.0...2.4.0)
