@@ -134,6 +134,14 @@ describe 'puppetserver_foreman' do
         end
       end
 
+      describe 'without TLS client authenticatio' do
+        let :params do
+          { use_client_tls_certs: false }
+        end
+
+        it { is_expected.to contain_file("#{etc_dir}/foreman.yaml").without_content(%r{:ssl_(cert|key):}) }
+      end
+
       describe 'without reports' do
         let :params do
           { reports: false }

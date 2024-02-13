@@ -38,6 +38,8 @@
 #   The number of times to retry HTTP calls in the report processor
 # @param puppet_basedir
 #   The directory used to install the report processor to
+# @param use_client_tls_certs
+#   Enable client TLS authentication to foreman
 class puppetserver_foreman (
   Stdlib::HTTPUrl $foreman_url = $puppetserver_foreman::params::foreman_url,
   Boolean $enc = true,
@@ -55,6 +57,7 @@ class puppetserver_foreman (
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_ca = $puppetserver_foreman::params::client_ssl_ca,
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_cert = $puppetserver_foreman::params::client_ssl_cert,
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_key = $puppetserver_foreman::params::client_ssl_key,
+  Boolean $use_client_tls_certs = true,
 ) inherits puppetserver_foreman::params {
   case $facts['os']['family'] {
     'Debian': { $json_package = 'ruby-json' }

@@ -1,8 +1,10 @@
 ---
 :url: "<%= @foreman_url %>"
 :ssl_ca: "<%= @ssl_ca %>"
+<% if @use_client_tls_certs -%>
 :ssl_cert: "<%= @ssl_cert %>"
 :ssl_key: "<%= @ssl_key %>"
+<% end -%>
 :puppetdir: "<%= @puppet_home %>"
 :puppetuser: "<%= @puppet_user %>"
 :facts: <%= @enc_upload_facts %>
