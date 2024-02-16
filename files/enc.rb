@@ -119,7 +119,7 @@ def parse_file(filename, mac_address_workaround = false)
   case File.extname(filename)
   when '.yaml'
     data = File.read(filename)
-    quote_macs!(data) if mac_address_workaround && YAML.load('22:22:22:22:22:22').is_a?(Integer)
+    quote_macs!(data) if mac_address_workaround && YAML.safe_load('22:22:22:22:22:22').is_a?(Integer)
     YAML.safe_load(data.gsub(/\!ruby\/object.*$/,''), permitted_classes: [Symbol, Time])
   when '.json'
     JSON.parse(File.read(filename))
@@ -452,7 +452,7 @@ if __FILE__ == $0 then
 
       if no_env
         require 'yaml'
-        yaml = YAML.load(result)
+        yaml = YAML.safe_load(result)
         yaml.delete('environment')
         # Always reset the result to back to clean yaml on our end
         puts yaml.to_yaml
