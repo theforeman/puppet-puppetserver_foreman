@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.1.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/3.1.0) (2024-03-26)
+
+[Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/3.0.0...3.1.0)
+
+**Implemented enhancements:**
+
+- Add support for Debian 11 and 12 [\#42](https://github.com/theforeman/puppet-puppetserver_foreman/pull/42) ([evgeni](https://github.com/evgeni))
+- Add Ubuntu 20.04 and 22.04 support [\#41](https://github.com/theforeman/puppet-puppetserver_foreman/pull/41) ([evgeni](https://github.com/evgeni))
+- Prepare for Ruby 3. Replace File.exists? with File.exist? [\#40](https://github.com/theforeman/puppet-puppetserver_foreman/pull/40) ([tuxmea](https://github.com/tuxmea))
+- Make TLS authentication to foreman optional [\#39](https://github.com/theforeman/puppet-puppetserver_foreman/pull/39) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [3.0.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/3.0.0) (2023-11-14)
 
 [Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/2.4.0...3.0.0)
