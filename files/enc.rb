@@ -444,7 +444,7 @@ if __FILE__ == $0 then
           result = enc(certname)
           cache(certname, result)
         end
-      rescue TimeoutError, SocketError, Errno::EHOSTUNREACH, Errno::ECONNREFUSED, NodeRetrievalError, FactUploadError => e
+      rescue Timeout::Error, SocketError, Errno::EHOSTUNREACH, Errno::ECONNREFUSED, NodeRetrievalError, FactUploadError => e
         $stderr.puts "Serving cached ENC: #{e}"
         # Read from cache, we got some sort of an error.
         result = read_cache(certname)
