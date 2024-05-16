@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.0.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/4.0.0) (2024-05-16)
+
+[Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/3.1.0...4.0.0)
+
+**Breaking changes:**
+
+- Use namespaced ensure\_packages, require puppetlabs/stdlib 9.x [\#44](https://github.com/theforeman/puppet-puppetserver_foreman/pull/44) ([gcoxmoz](https://github.com/gcoxmoz))
+
+**Fixed bugs:**
+
+- Fix Deprecation-Warning [\#46](https://github.com/theforeman/puppet-puppetserver_foreman/pull/46) ([cocker-cc](https://github.com/cocker-cc))
+
 ## [3.1.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/3.1.0) (2024-03-26)
 
 [Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/3.0.0...3.1.0)
