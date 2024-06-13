@@ -37,7 +37,7 @@ Puppet::Reports.register_report(:foreman) do
 
   def process
     # Default retry limit is 1.
-    retry_limit = SETTINGS[:report_retry_limit] ? SETTINGS[:report_retry_limit] : 1
+    retry_limit = SETTINGS.fetch(:report_retry_limit, 1)
     tries = 0
     begin
       # check for report metrics
@@ -78,16 +78,14 @@ Puppet::Reports.register_report(:foreman) do
   end
 
   def generate_report
-    report = {}
-    set_report_format
-    report['host'] = self.host
-    # Time.to_s behaves differently in 1.8 / 1.9 so we explicity set the 1.9 format
-    report['reported_at'] = self.time.utc.strftime("%Y-%m-%d %H:%M:%S UTC")
-    report['status'] = metrics_to_hash(self)
-    report['metrics'] = m2h(self.metrics)
-    report['logs'] = logs_to_array(self.logs)
-
-    report
+    {
+      'host' => self.host,
+      # Time.to_s behaves differently in 1.8 / 1.9 so we explicity set the 1.9 format
+      'reported_at' => self.time.utc.strftime("%Y-%m-%d %H:%M:%S UTC"),
+      'status' => metrics_to_hash(self),
+      'metrics' => m2h(self.metrics),
+      'logs' => logs_to_array(self.logs),
+    }
   end
 
   private
@@ -100,13 +98,21 @@ Puppet::Reports.register_report(:foreman) do
 
     # find our metric values
     METRIC.each do |m|
-      if @format == 0
-        report_status[m] = metrics["resources"][m.to_sym] unless metrics["resources"].nil?
+      case m
+      when "applied"
+        mv = metrics["changes"]
+        name = "total"
+      when "failed_restarts"
+        mv = metrics["resources"]
+        name = "failed_to_restart"
+      when "pending"
+        mv = metrics["events"]
+        name = "noop"
       else
-        h=translate_metrics_to26(m)
-        mv = metrics[h[:type]]
-        report_status[m] = mv[h[:name].to_sym] + mv[h[:name].to_s] rescue nil
+        mv = metrics["resources"]
+        name = m
       end
+      report_status[m] = mv[name.to_sym] + mv[name.to_s] rescue nil
       report_status[m] ||= 0
     end
 
@@ -116,22 +122,20 @@ Puppet::Reports.register_report(:foreman) do
       report_status["skipped"] = 0
     end
     # fix for reports that contain no metrics (i.e. failed catalog)
-    if @format > 1 and report.respond_to?(:status) and report.status == "failed"
+    if report.respond_to?(:status) and report.status == "failed"
       report_status["failed"] += 1
     end
     # fix for Puppet non-resource errors (i.e. failed catalog fetches before falling back to cache)
-    report_status["failed"] += report.logs.find_all {|l| l.source =~ /Puppet$/ && l.level.to_s == 'err' }.count
+    report_status["failed"] += report.logs.count {|l| l.source =~ /Puppet$/ && l.level.to_s == 'err' }
 
     return report_status
   end
 
   def m2h metrics
-    h = {}
-    metrics.each do |title, mtype|
-      h[mtype.name] ||= {}
-      mtype.values.each{|m| h[mtype.name].merge!({m[0].to_s => m[2]})}
-    end
-    return h
+    metrics.map do |title, mtype|
+      values = mtype.values.map { |name, _label, value| [name, value] }
+      [title, values.to_h]
+    end.to_h
   end
 
   def logs_to_array logs
@@ -144,52 +148,19 @@ Puppet::Reports.register_report(:foreman) do
       next if log.message =~ /^Finished catalog run in \d+.\d+ seconds$/
 
       # Match Foreman's slightly odd API format...
-      l = { 'log' => { 'sources' => {}, 'messages' => {} } }
-      l['log']['level'] = log.level.to_s
-      l['log']['messages']['message'] = log.message
-      l['log']['sources']['source'] = log.source
-      h << l
+      h << {
+        'log' => {
+          'level' => log.level.to_s,
+          'sources' => {
+            'source' => log.source,
+          },
+          'messages' => {
+            'message' => log.message,
+          },
+        },
+      }
     end
     return h
-  end
-
-  # The metrics layout has changed in Puppet 2.6.x release,
-  # this method attempts to align the bit value metrics and the new name scheme in 2.6.x
-  # returns a hash of { :type => "metric type", :name => "metric_name"}
-  def translate_metrics_to26 metric
-    case metric
-    when "applied"
-      case @format
-      when 0..1
-        { :type => "total", :name => :changes}
-      else
-        { :type => "changes", :name => "total"}
-      end
-    when "failed_restarts"
-      case @format
-      when 0..1
-        { :type => "resources", :name => metric}
-      else
-        { :type => "resources", :name => "failed_to_restart"}
-      end
-    when "pending"
-      { :type => "events", :name => "noop" }
-    else
-      { :type => "resources", :name => metric}
-    end
-  end
-
-  def set_report_format
-    @format ||= case
-                when self.instance_variables.detect {|v| v.to_s == "@environment"}
-                  @format = 3
-                when self.instance_variables.detect {|v| v.to_s == "@report_format"}
-                  @format = 2
-                when self.instance_variables.detect {|v| v.to_s == "@resource_statuses"}
-                  @format = 1
-                else
-                  @format = 0
-                end
   end
 
   def foreman_url
