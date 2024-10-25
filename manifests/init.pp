@@ -40,6 +40,8 @@
 #   The directory used to install the report processor to
 # @param use_client_tls_certs
 #   Enable client TLS authentication to foreman
+# @param fact_watcher_service
+#   Sets up a simple systemd unit that watches for new fact files and publishes them to foreman. Not required when foreman is the ENC
 class puppetserver_foreman (
   Stdlib::HTTPUrl $foreman_url = $puppetserver_foreman::params::foreman_url,
   Boolean $enc = true,
@@ -58,6 +60,7 @@ class puppetserver_foreman (
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_cert = $puppetserver_foreman::params::client_ssl_cert,
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_key = $puppetserver_foreman::params::client_ssl_key,
   Boolean $use_client_tls_certs = true,
+  Boolean $fact_watcher_service = false,
 ) inherits puppetserver_foreman::params {
   case $facts['os']['family'] {
     'Debian': { $json_package = 'ruby-json' }
@@ -125,6 +128,17 @@ class puppetserver_foreman (
       owner  => $puppet_user,
       group  => $puppet_group,
       mode   => '0750',
+    }
+    if $fact_watcher_service {
+      package { 'ruby-inotify':
+        ensure   => 'installed',
+        provider => 'puppet_gem',
+      }
+      -> systemd::unit_file { 'fact_watcher.service':
+        enable  => true,
+        active  => true,
+        content => epp('puppetserver_foreman/fact_watcher.service.epp', { 'user' => $puppet_user }),
+      }
     }
   }
 }

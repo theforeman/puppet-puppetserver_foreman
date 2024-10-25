@@ -1,0 +1,13 @@
+<%- | String[1] $user | -%>
+# THIS FILE IS MANAGED BY PUPPET
+[Unit]
+Description=publish facts to foreman
+
+[Service]
+Type=simple
+Environment=PATH=/opt/puppetlabs/puppet/bin:<%= $facts['path'] %>
+User=<%= $user %>
+ExecStart=/etc/puppetlabs/puppet/node.rb --watch-facts --push-facts
+
+[Install]
+WantedBy=multi-user.target
