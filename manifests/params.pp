@@ -52,4 +52,11 @@ class puppetserver_foreman::params {
   $client_ssl_key  = "${puppet_ssldir}/private_keys/${lower_fqdn}.pem"
 
   $enc_fact_extension = bool2str(versioncmp($facts['puppetversion'], '7.0') >= 0, 'json', 'yaml')
+
+  # PE uses a different user/group compared to open source puppet
+  # the is_pe fact exists in PE and in stdlib. It can be true/false/undef (undef means open source)
+  $puppet_user = $facts['is_pe'] ? {
+    true => 'pe-puppet',
+    default => 'puppet'
+  }
 }
