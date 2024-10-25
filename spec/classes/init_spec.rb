@@ -81,6 +81,8 @@ describe 'puppetserver_foreman' do
             .with_owner('puppet')
             .with_group('puppet')
             .with_content(%r{foreman\.yaml})
+
+          should_not contain_systemd__manage_unit('fact_watcher.service').with_enable(false).with_active(false)
         end
 
         it 'should set up directories for the ENC' do
@@ -167,6 +169,39 @@ describe 'puppetserver_foreman' do
         let(:hiera_config) { 'spec/fixtures/hiera/hiera.yaml' }
 
         it { should contain_class('puppetserver_foreman').with_foreman_url('https://hiera-foreman.example.com') }
+      end
+      describe 'setup service to pubish facts' do
+        describe 'just managing the service' do
+          let :params do
+            { manage_fact_watcher: true }
+          end
+          it { is_expected.not_to contain_package('ruby-inotify') }
+          it { is_expected.to contain_systemd__manage_unit('fact_watcher.service').with_enable(false).with_active(false) }
+        end
+        describe 'starting the service and managing the packages' do
+          let :params do
+            {
+              manage_fact_watcher: true,
+              fact_watcher_service: true,
+              manage_fact_watcher_dependencies: true,
+            }
+          end
+          it { is_expected.to contain_package('ruby-inotify') }
+          it { is_expected.to contain_systemd__manage_unit('fact_watcher.service').with_enable(true).with_active(true) }
+        end
+      end
+
+      describe 'on PE' do
+        let :facts do
+          os_facts.merge({is_pe: true})
+        end
+        it { is_expected.to contain_systemd__manage_unit('fact_watcher.service').with_enable(true).with_active(true) }
+        describe 'without' do
+          let :params do
+            {manage_fact_watcher_dependencies: false}
+          end
+          it { is_expected.not_to contain_package('ruby-inotify') }
+        end
       end
     end
   end
