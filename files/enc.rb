@@ -202,7 +202,7 @@ def build_body(certname,filename)
 
   begin
     require 'facter'
-    puppet_facts['values']['puppetmaster_fqdn'] = Facter.value(:fqdn).to_s
+    puppet_facts['values']['puppetmaster_fqdn'] = Facter.value('networking.fqdn').to_s
   rescue LoadError
     puppet_facts['values']['puppetmaster_fqdn'] = `hostname -f`.strip
   end
