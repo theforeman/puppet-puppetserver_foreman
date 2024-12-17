@@ -36,6 +36,8 @@
 #   The timeout to use on HTTP calls in the report processor
 # @param report_retry_limit
 #   The number of times to retry HTTP calls in the report processor
+# @param report_facter_errors
+#   Whether to exclude facter errors from report metrics
 # @param puppet_basedir
 #   The directory used to install the report processor to
 # @param use_client_tls_certs
@@ -54,6 +56,7 @@ class puppetserver_foreman (
   Boolean $reports = true,
   Integer[0] $reports_timeout = 60,
   Integer[0] $report_retry_limit = 1,
+  Boolean $report_facter_errors = true,
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_ca = $puppetserver_foreman::params::client_ssl_ca,
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_cert = $puppetserver_foreman::params::client_ssl_cert,
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_key = $puppetserver_foreman::params::client_ssl_key,

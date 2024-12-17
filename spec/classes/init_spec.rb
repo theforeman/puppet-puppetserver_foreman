@@ -129,6 +129,7 @@ describe 'puppetserver_foreman' do
             ':timeout: 60',
             ':report_timeout: 60',
             ':report_retry_limit: 1',
+            ':report_facter_errors: true',
             ':threads: null',
           ])
         end
