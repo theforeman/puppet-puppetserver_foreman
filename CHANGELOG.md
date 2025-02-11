@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.1.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/4.1.0) (2025-02-11)
+
+[Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/4.0.0...4.1.0)
+
+**Implemented enhancements:**
+
+- Add support for running on PE [\#51](https://github.com/theforeman/puppet-puppetserver_foreman/pull/51) ([bastelfreak](https://github.com/bastelfreak))
+- Add AlmaLinux 8 & 9 support [\#48](https://github.com/theforeman/puppet-puppetserver_foreman/pull/48) ([archanaserver](https://github.com/archanaserver))
+- Simplify the report processor [\#24](https://github.com/theforeman/puppet-puppetserver_foreman/pull/24) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- enc.rb: Switch from legacy to structured facts [\#53](https://github.com/theforeman/puppet-puppetserver_foreman/pull/53) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [4.0.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/4.0.0) (2024-05-16)
 
 [Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/3.1.0...4.0.0)
