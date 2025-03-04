@@ -185,7 +185,7 @@ end
 
 def build_body(certname,filename)
   puppet_facts = parse_file(filename, true)
-  hostname     = puppet_facts['values']['fqdn'] || certname
+  hostname     = puppet_facts.dig('values', 'networking', 'fqdn') || certname
 
   # if there is no environment in facts
   # get it from node file ({puppetdir}/yaml/node/
