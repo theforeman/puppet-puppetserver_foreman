@@ -81,6 +81,8 @@ describe 'puppetserver_foreman' do
             .with_owner('puppet')
             .with_group('puppet')
             .with_content(%r{foreman\.yaml})
+
+          should_not contain_systemd__unit_file('fact_watcher.service')
         end
 
         it 'should set up directories for the ENC' do
@@ -167,6 +169,12 @@ describe 'puppetserver_foreman' do
         let(:hiera_config) { 'spec/fixtures/hiera/hiera.yaml' }
 
         it { should contain_class('puppetserver_foreman').with_foreman_url('https://hiera-foreman.example.com') }
+      end
+      describe 'setup service to pubish facts' do
+        let :params do
+          {fact_watcher_service: true}
+        end
+        it { is_expected.to contain_systemd__unit_file('fact_watcher.service') }
       end
     end
   end
