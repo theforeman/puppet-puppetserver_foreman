@@ -8,7 +8,7 @@ module](https://github.com/theforeman/puppet-foreman).
 
 ## Compatibility
 
-* Foreman API v2: 1.3 - 2.x
+* Foreman API v2: 1.3 - 3.x
 * Puppetserver: 1.x - 7.x
 
 These scripts have a long history and have basically been unchanged since Puppet 2.6, even before Puppetserver existed.
