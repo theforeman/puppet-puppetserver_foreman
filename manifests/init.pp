@@ -40,6 +40,10 @@
 #   The directory used to install the report processor to
 # @param use_client_tls_certs
 #   Enable client TLS authentication to foreman
+# @param fact_watcher_service
+#   Sets up a simple systemd unit that watches for new fact files and publishes them to foreman. Not required when foreman is the ENC
+# @param manage_fact_watcher_dependencies
+#   Install the missing dependencies for fact_watchter
 class puppetserver_foreman (
   Stdlib::HTTPUrl $foreman_url = $puppetserver_foreman::params::foreman_url,
   Boolean $enc = true,
@@ -58,6 +62,8 @@ class puppetserver_foreman (
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_cert = $puppetserver_foreman::params::client_ssl_cert,
   Variant[Enum[''], Stdlib::Absolutepath] $ssl_key = $puppetserver_foreman::params::client_ssl_key,
   Boolean $use_client_tls_certs = true,
+  Boolean $fact_watcher_service = $puppetserver_foreman::params::fact_watcher_service,
+  Boolean $manage_fact_watcher_dependencies = true,
 ) inherits puppetserver_foreman::params {
   case $facts['os']['family'] {
     'Debian': { $json_package = 'ruby-json' }
@@ -125,6 +131,34 @@ class puppetserver_foreman (
       owner  => $puppet_user,
       group  => $puppet_group,
       mode   => '0750',
+    }
+    if $manage_fact_watcher_dependencies {
+      $ensure = if $fact_watcher_service {
+        'installed'
+      } else {
+        'absent'
+      }
+      package { 'ruby-inotify':
+        ensure   => 'installed',
+        provider => 'puppet_gem',
+        before   => Systemd::Unit_file['fact_watcher.service'],
+      }
+    }
+    systemd::manage_unit { 'fact_watcher.service':
+      enable        => $fact_watcher_service,
+      active        => $fact_watcher_service,
+      unit_entry    => {
+        'Description' => 'Publish facts to Foreman',
+      },
+      service_entry => {
+        'Type'        => 'simple',
+        'Environment' => "PATH=/opt/puppetlabs/puppet/bin:${facts['path']}",
+        'User'        => $puppet_user,
+        'ExecStart'   => "${puppet_etcdir}/node.rb --watch-facts --push-facts-parallel",
+      },
+      install_entry => {
+        'WantedBy' => 'multi-user.target',
+      },
     }
   }
 }
