@@ -115,11 +115,10 @@ rescue LoadError
   end
 end
 
-def parse_file(filename, mac_address_workaround = false)
+def parse_file(filename)
   case File.extname(filename)
   when '.yaml'
     data = File.read(filename)
-    quote_macs!(data) if mac_address_workaround && YAML.safe_load('22:22:22:22:22:22').is_a?(Integer)
     YAML.safe_load(data.gsub(/\!ruby\/object.*$/,''), permitted_classes: [Symbol, Time])
   when '.json'
     JSON.parse(File.read(filename))
@@ -177,14 +176,8 @@ def process_all_facts(http_requests)
   end
 end
 
-def quote_macs! facts
-  # Adds single quotes to all unquoted mac addresses in the raw yaml fact string
-  # if they might otherwise be interpreted as base60 ints
-  facts.gsub!(/: ([0-5][0-9](:[0-5][0-9]){5})$/,": '\\1'")
-end
-
 def build_body(certname,filename)
-  puppet_facts = parse_file(filename, true)
+  puppet_facts = parse_file(filename)
   hostname     = puppet_facts['values']['fqdn'] || certname
 
   # if there is no environment in facts

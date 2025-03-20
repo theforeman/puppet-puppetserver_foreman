@@ -64,33 +64,4 @@ describe 'foreman_external_node' do
     expect(hash['name']).to eql 'fake.host.fqdn.com'
     expect(hash['facts']).to be_a(Hash)
   end
-
-  describe 'quote_macs!' do
-    it 'quotes macs that need quoting' do
-      yaml = "---\n  macaddress: 52:54:00:44:49:56\n"
-      enc.quote_macs! yaml
-      expect(yaml).to eql "---\n  macaddress: '52:54:00:44:49:56'\n"
-    end
-
-    it "doesn't modify quoted macs" do
-      yaml = "---\n  macaddress: '52:54:00:44:49:56'\n"
-      result = yaml.dup
-      enc.quote_macs! result
-      expect(yaml).to eql result
-    end
-
-    it 'only looks for mac addresses at the end of lines' do
-      yaml = "---\n  foo: 52:54:00:44:49:56 isn't something we're going to modify\n"
-      result = yaml.dup
-      enc.quote_macs! result
-      expect(yaml).to eql result
-    end
-
-    it 'ignores mac addresses that couldn\'t be interpreted as base 60' do
-      yaml = "---\n  macaddress: 52:54:FF:44:49:56\n"
-      result = yaml.dup
-      enc.quote_macs! result
-      expect(yaml).to eql result
-    end
-  end
 end
