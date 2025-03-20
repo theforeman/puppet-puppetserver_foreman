@@ -23,21 +23,26 @@ class FactUploadError < StandardError; end
 class NodeRetrievalError < StandardError; end
 
 class Settings
-  class << self
-    def settings_file
-      if RbConfig::CONFIG['host_os'] =~ /freebsd|dragonfly/i
-        '/usr/local/etc/puppet/foreman.yaml'
-      elsif File.exist?('/etc/puppetlabs/puppet/foreman.yaml')
-        '/etc/puppetlabs/puppet/foreman.yaml'
-      else
-        '/etc/puppet/foreman.yaml'
-      end
-    end
+  include Singleton
 
-    SETTINGS = new(settings_file)
+  attr_reader :settings_file
+
+  def initialize(path = nil)
+    load_settings(path)
   end
 
-  def initialize(path)
+  def load_settings(path)
+    unless path
+      path = if RbConfig::CONFIG['host_os'] =~ /freebsd|dragonfly/i
+               '/usr/local/etc/puppet/foreman.yaml'
+             elsif File.exist?('/etc/puppetlabs/puppet/foreman.yaml')
+               '/etc/puppetlabs/puppet/foreman.yaml'
+             else
+               '/etc/puppet/foreman.yaml'
+             end
+    end
+
+    @settings_file = path
     @settings = YAML.load_file(path)
     @settings.delete_if! { |_key, value| value.respond_to(:empty?) && value.empty? }
   end
@@ -94,32 +99,36 @@ end
 
 class Facts
   class << self
-    EXTENSION = Settings.fact_extension
-
     def directory
-      data_dir = EXTENSION == 'yaml' ? 'yaml' : 'server_data'
-      File.join(Settings.puppet_dir, data_dir, 'facts')
+      data_dir = extension == 'yaml' ? 'yaml' : 'server_data'
+      File.join(Settings.instance.puppet_dir, data_dir, 'facts')
     end
 
     def file(certname)
-      File.join(directory, "#{certname}.#{EXTENSION}")
+      File.join(directory, "#{certname}.#{extension}")
     end
 
     def files
-      Dir[File.join(directory, "*.#{EXTENSION}")]
+      Dir[File.join(directory, "*.#{extension}")]
     end
 
     def certname_from_filename(filename)
-      File.basename(filename, ".#{EXTENSION}")
+      File.basename(filename, ".#{extension}")
+    end
+
+    def extension
+      Settings.instance.fact_extension
     end
   end
 end
 
 class Cache
-  INSTANCE = new(Settings.stat_dir)
+  include Singleton
 
-  def initialize(directory)
-    @directory = directory
+  attr_writer :directory
+
+  def initialize
+    @directory = Settings.instance.stat_dir
   end
 
   def write(key, result)
@@ -167,7 +176,7 @@ class ForemanClient
     end
 
     cache_name = cache_key(certname)
-    return if Cache::INSTANCE.fresh?(cache_name, stat)
+    return if Cache.instance.fresh?(cache_name, stat)
 
     unless (body = build_fact_body(certname, filename))
       warn "Empty values hash in fact file #{filename}, not uploading"
@@ -185,7 +194,7 @@ class ForemanClient
       raise FactUploadError("#{certname}: During the fact upload the server responded with: #{response.code} #{response.message}. Error is ignored and the execution continues.")
     end
 
-    Cache::INSTANCE.write(cache_name, "Facts from this host were last pushed to #{uri} at #{Time.now}\n")
+    Cache.instance.write(cache_name, "Facts from this host were last pushed to #{uri} at #{Time.now}\n")
   rescue FactUploadError
     raise
   rescue StandardError => e
@@ -295,12 +304,12 @@ def enc(certname, strip_environment:)
       # Always reset the result to back to clean yaml on our end
       result = yaml.to_yaml
     end
-    Cache::INSTANCE.write(certname, result)
+    Cache.instance.write(certname, result)
     result
   end
 rescue Timeout::Error, SocketError, Errno::EHOSTUNREACH, Errno::ECONNREFUSED, NodeRetrievalError, FactUploadError => e
   warn "Serving cached ENC: #{e}"
-  Cache::INSTANCE.read(certname)
+  Cache.instance.read(certname)
 end
 
 def push_facts(certname:, threads:, watch:)
@@ -375,7 +384,7 @@ def watch_facts(queue)
       add_watch = true
     end
 
-    next if File.extname(fn) != ".#{Settings.fact_extension}"
+    next if File.extname(fn) != ".#{Settings.instance.fact_extension}"
 
     if add_watch || (ev.mask & Inotify::ONESHOT)
       watch_descriptors[inotify.add_watch(fn, Inotify::CLOSE_WRITE)] = fn
