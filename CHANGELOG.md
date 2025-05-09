@@ -1,6 +1,20 @@
 # Changelog
 
-## [4.1.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/4.1.0) (2025-02-11)
+## [4.2.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/4.2.0) (2025-05-09)
+
+[Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/4.1.0...4.2.0)
+
+**Implemented enhancements:**
+
+- Use better Ruby methods to transform items [\#60](https://github.com/theforeman/puppet-puppetserver_foreman/pull/60) ([ekohl](https://github.com/ekohl))
+- Remove legacy MAC address quoting workaround [\#59](https://github.com/theforeman/puppet-puppetserver_foreman/pull/59) ([binford2k](https://github.com/binford2k))
+- Add service to publish facts to foreman [\#52](https://github.com/theforeman/puppet-puppetserver_foreman/pull/52) ([bastelfreak](https://github.com/bastelfreak))
+
+**Fixed bugs:**
+
+- puppet/systemd: Allow 7.x [\#61](https://github.com/theforeman/puppet-puppetserver_foreman/pull/61) ([bastelfreak](https://github.com/bastelfreak))
+
+## [4.1.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/4.1.0) (2025-02-12)
 
 [Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/4.0.0...4.1.0)
 
