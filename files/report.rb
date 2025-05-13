@@ -138,7 +138,8 @@ Puppet::Reports.register_report(:foreman) do
   end
 
   def logs_to_array logs
-    logs.filter_map do |log|
+    h = []
+    logs.each do |log|
       # skipping debug messages, we dont want them in Foreman's db
       next if log.level == :debug
 
@@ -146,7 +147,7 @@ Puppet::Reports.register_report(:foreman) do
       next if log.message =~ /^Finished catalog run in \d+.\d+ seconds$/
 
       # Match Foreman's slightly odd API format...
-      {
+      h << {
         'log' => {
           'level' => log.level.to_s,
           'sources' => {
@@ -158,6 +159,7 @@ Puppet::Reports.register_report(:foreman) do
         },
       }
     end
+    return h
   end
 
   def foreman_url
