@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.2.1](https://github.com/theforeman/puppet-puppetserver_foreman/tree/4.2.1) (2025-05-13)
+
+[Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/4.2.0...4.2.1)
+
+**Fixed bugs:**
+
+- Bring back Ruby 2.6 compatiblity [\#63](https://github.com/theforeman/puppet-puppetserver_foreman/pull/63) ([ekohl](https://github.com/ekohl))
+
 ## [4.2.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/4.2.0) (2025-05-09)
 
 [Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/4.1.0...4.2.0)
