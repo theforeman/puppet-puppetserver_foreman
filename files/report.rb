@@ -67,6 +67,9 @@ Puppet::Reports.register_report(:foreman) do
       req.content_type = 'application/json'
       req.body         = {'config_report' => generate_report}.to_json
       response = http.request(req)
+      unless response.is_a?(Net::HTTPSuccess)
+        raise Puppet::Error, "HTTP request failed with code: #{response.code} body: #{response.body}"
+      end
     rescue Exception => e
       if (tries += 1) < retry_limit
         Puppet.err "Could not send report to Foreman at #{foreman_url}/api/config_reports (attempt #{tries}/#{retry_limit}). Retrying... Stacktrace: #{e}\n#{e.backtrace}"
