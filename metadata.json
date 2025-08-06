@@ -1,6 +1,6 @@
 {
   "name": "theforeman-puppetserver_foreman",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "author": "theforeman",
   "summary": "Scripts to integrate Puppetserver with Foreman",
   "license": "GPL-3.0+",

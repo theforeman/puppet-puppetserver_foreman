@@ -1,8 +1,8 @@
 # Changelog
 
-## [4.2.1](https://github.com/theforeman/puppet-puppetserver_foreman/tree/4.2.1) (2025-08-04)
+## [4.2.2](https://github.com/theforeman/puppet-puppetserver_foreman/tree/4.2.2) (2025-08-04)
 
-[Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/4.2.1...4.2.1)
+[Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/4.2.1...4.2.2)
 
 **Fixed bugs:**
 
