@@ -1,13 +1,5 @@
 # Changelog
 
-## [4.2.1](https://github.com/theforeman/puppet-puppetserver_foreman/tree/4.2.1) (2025-08-04)
-
-[Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/4.2.1...4.2.1)
-
-**Fixed bugs:**
-
-- do not swallow failures when sending POST request to foreman [\#65](https://github.com/theforeman/puppet-puppetserver_foreman/pull/65) ([corporate-gadfly](https://github.com/corporate-gadfly))
-
 ## [4.2.1](https://github.com/theforeman/puppet-puppetserver_foreman/tree/4.2.1) (2025-05-13)
 
 [Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/4.2.0...4.2.1)
