@@ -1,6 +1,14 @@
 # Changelog
 
-## [4.2.2](https://github.com/theforeman/puppet-puppetserver_foreman/tree/4.2.2) (2025-08-06)
+## [4.3.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/4.3.0) (2025-10-07)
+
+[Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/4.2.2...4.3.0)
+
+**Implemented enhancements:**
+
+- Allow puppet/systemd 9.x [\#68](https://github.com/theforeman/puppet-puppetserver_foreman/pull/68) ([evgeni](https://github.com/evgeni))
+
+## [4.2.2](https://github.com/theforeman/puppet-puppetserver_foreman/tree/4.2.2) (2025-08-08)
 
 [Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/4.2.1...4.2.2)
 
