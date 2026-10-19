@@ -1,6 +1,20 @@
 # Changelog
 
-## [4.3.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/4.3.0) (2025-10-07)
+## [5.0.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/5.0.0) (2026-10-19)
+
+[Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/4.3.0...5.0.0)
+
+**Breaking changes:**
+
+- Switch from puppet to OpenVox 8 [\#77](https://github.com/theforeman/puppet-puppetserver_foreman/pull/77) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Add OpenVox 9 support [\#80](https://github.com/theforeman/puppet-puppetserver_foreman/pull/80) ([bastelfreak](https://github.com/bastelfreak))
+- puppetlabs/stdlib: Allow 10.x & puppet/systemd: Allow 10.x [\#78](https://github.com/theforeman/puppet-puppetserver_foreman/pull/78) ([bastelfreak](https://github.com/bastelfreak))
+- Add EL 10 support [\#75](https://github.com/theforeman/puppet-puppetserver_foreman/pull/75) ([ekohl](https://github.com/ekohl))
+
+## [4.3.0](https://github.com/theforeman/puppet-puppetserver_foreman/tree/4.3.0) (2025-10-08)
 
 [Full Changelog](https://github.com/theforeman/puppet-puppetserver_foreman/compare/4.2.2...4.3.0)
 
