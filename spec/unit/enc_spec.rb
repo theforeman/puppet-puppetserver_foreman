@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'yaml'
 require 'tempfile'
 
-class Enc
+module Enc
   settings = Tempfile.new('foreman.yaml')
   settings.write(<<-EOF)
 ---
@@ -11,18 +11,21 @@ class Enc
 :puppet_home: "/var/lib/puppet"
   EOF
   settings.close
-  $settings_file = settings.path
+
   eval File.read(File.join(__dir__, '..', '..', 'files', 'enc.rb'))
+
+  # Load temporary settings
+  Settings.instance.load_settings(settings.path)
+  Cache.instance.directory = '/doesnotexist'
 end
 
 describe 'foreman_external_node' do
-  # Get our ruby
-  let(:enc) { Enc.new }
+  let(:cache) { Enc::Cache.instance }
 
   it "should connect to the URL in the manifest" do
     webstub = stub_request(:post, "http://localhost:3000/api/hosts/facts").with(:body => {"fake"=>"data"})
 
-    expect(enc).to receive(:stat_file).with('fake.host.fqdn.com-push-facts').exactly(5).times.and_return("/tmp/fake.host.fqdn.com-push-facts.yaml")
+    expect(cache).to receive(:stat_file).with('fake.host.fqdn.com-push-facts').exactly(5).times.and_return("/tmp/fake.host.fqdn.com-push-facts.yaml")
     # first :exists? call is for 'push-facts'; second one for fixture facts
     allow(File).to receive(:exists?).and_return(false, true)
     allow(File).to receive(:stat).and_return(double(:mtime => Time.now.utc))
