@@ -210,17 +210,6 @@
         },
         "level": "notice"
       }
-    },
-    {
-      "log": {
-        "sources": {
-          "source": "//slave01.rackspace.theforeman.org/Puppet"
-        },
-        "messages": {
-          "message": "Applied catalog in 14.26 seconds"
-        },
-        "level": "notice"
-      }
     }
   ]
 }
