@@ -6,10 +6,20 @@ configuration file. All of this can be managed by this module.
 Historically this integration was part of [theforeman-foreman
 module](https://github.com/theforeman/puppet-foreman).
 
+## Installation
+
+### Report Processor
+
+1. Install the module
+1. Enable the report processor in `puppet.conf` by setting `reports = log, foreman` (or any other reports you want).
+1. If the Foreman node is not the same as `server`, then also set  `reporturl = https://foreman.example.org`
+1. Restart `puppetserver`
+
 ## Compatibility
 
 * Foreman API v2: 1.3 - 3.x
 * Puppetserver: 7.x - 8.x
+* OpenVox: 8.x+
 
 These scripts have a long history and have basically been unchanged since Puppet 2.6, even before Puppetserver existed.
 They have been adopted to leverage some more modern Ruby methods and require at least Ruby 2.6, but can probably still handle old reports.
