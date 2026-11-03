@@ -82,22 +82,6 @@ class puppetserver_foreman (
     group   => $puppet_group,
   }
 
-  if $reports {
-    exec { 'Create Puppet Reports dir':
-      command => "/bin/mkdir -p ${puppet_basedir}/reports",
-      creates => "${puppet_basedir}/reports",
-    }
-
-    file { "${puppet_basedir}/reports/foreman.rb":
-      ensure  => file,
-      content => file("${module_name}/report.rb"),
-      mode    => '0644',
-      owner   => 'root',
-      group   => '0',
-      require => Exec['Create Puppet Reports dir'],
-    }
-  }
-
   if $enc {
     file { "${puppet_etcdir}/node.rb":
       ensure  => file,
