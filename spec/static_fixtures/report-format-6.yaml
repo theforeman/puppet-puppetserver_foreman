@@ -298,15 +298,6 @@ logs:
   time: '2017-06-28T17:28:27.282770457+00:00'
   file: "/etc/puppetlabs/code/environments/production/modules/ntp/manifests/service.pp"
   line: 6
-- !ruby/object:Puppet::Util::Log
-  level: :notice
-  message: Applied catalog in 14.26 seconds
-  source: "//slave01.rackspace.theforeman.org/Puppet"
-  tags:
-  - notice
-  time: '2017-06-28T17:28:31.534448086+00:00'
-  file:
-  line:
 catalog_uuid: e8c2c0aa-6648-4423-b4c1-a1b2b3d19653
 environment: production
 configuration_version: 1498670892
