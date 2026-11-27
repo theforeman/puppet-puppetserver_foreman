@@ -316,67 +316,41 @@ def watch_and_send_facts(parallel)
     exit 2
   end
 
-  watch_descriptors = []
-  pending = []
+  pending = {}
   threads = thread_count
   last_send = Time.now
-
-  inotify_limit = `sysctl fs.inotify.max_user_watches`.gsub(/[^\d]/, '').to_i
 
   inotify = Inotify.new
 
   fact_dir = fact_directory
 
-  # actually we need only MOVED_TO events because puppet uses File.rename after tmp file created and flushed.
-  # see lib/puppet/util.rb near line 469
-  inotify.add_watch(fact_dir, Inotify::CREATE | Inotify::MOVED_TO )
-
-  files = fact_files
-
-  if files.length > inotify_limit
-    puts "Looks like your inotify watch limit is #{inotify_limit} but you are asking to watch at least #{files.length} fact files."
-    puts "Increase the watch limit via the system tunable fs.inotify.max_user_watches, exiting."
-    exit 2
-  end
-
-  files.each do |f|
-    begin
-      watch_descriptors[inotify.add_watch(f, Inotify::CLOSE_WRITE)] = f
-    end
-  end
+  # Puppet writes a fact file as a temp file renamed over the old one, so every update is
+  # exactly one MOVED_TO event of the directory. The files themselves are not watched: the
+  # watch of a replaced file reports IN_IGNORED, which queued the same host a second time
+  # and made two parallel uploads create the host twice in Foreman.
+  inotify.add_watch(fact_dir, Inotify::MOVED_TO)
 
   inotify.each_event do |ev|
-    fn = watch_descriptors[ev.wd]
-    add_watch = false
-
-    unless fn
-      # inotify returns basename for renamed file as ev.name
-      # but we need full path
-      fn = File.join(fact_dir, ev.name)
-      add_watch = true
-    end
+    # inotify returns basename for renamed file as ev.name
+    # but we need full path
+    fn = File.join(fact_dir, ev.name)
 
     if File.extname(fn) != ".#{fact_extension}"
       next
     end
 
-    if add_watch || (ev.mask & Inotify::ONESHOT)
-      watch_descriptors[inotify.add_watch(fn, Inotify::CLOSE_WRITE)] = fn
-    end
-
-    if fn
-      certname = certname_from_filename(fn)
-      req = generate_fact_request certname, fn
-      if parallel
-        pending << [certname,req]
-      else
-        upload_facts(certname,req)
-      end
+    certname = certname_from_filename(fn)
+    req = generate_fact_request certname, fn
+    if parallel
+      # a host is in a batch only once, with its latest facts
+      pending[certname] = req if req
+    else
+      upload_facts(certname, req)
     end
     if parallel && (pending.length >= threads || ((last_send + 5) < Time.now))
       if pending.length > 0
-        upload_facts_parallel(pending, false)
-        pending = []
+        upload_facts_parallel(pending.to_a, false)
+        pending = {}
       end
       last_send = Time.now
     end
